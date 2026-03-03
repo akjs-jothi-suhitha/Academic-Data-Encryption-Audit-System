@@ -110,41 +110,32 @@ http://localhost:5173
 ### 🔌 API Endpoints
 
 Authentication
-
-POST /api/auth/register
-POST /api/auth/login
+- POST /api/auth/register
+- POST /api/auth/login
 
 Academic Records
-
-GET /api/records
-POST /api/records
-PUT /api/records/:id
-DELETE /api/records/:id
+- GET /api/records
+- POST /api/records
+- PUT /api/records/:id
+- DELETE /api/records/:id
 
 Audit Logs (Admin Only)
-GET /api/audit
-GET /api/audit/export
+- GET /api/audit
+- GET /api/audit/export
 
 Admin Dashboard
-GET /api/admin/dashboard
+- GET /api/admin/dashboard
 
 ### 🔒 Security Features Implemented
 
-Password hashing using bcrypt
-
-JWT token-based authentication
-
-Role-based authorization
-
-AES encryption for sensitive academic fields
-
-Secure HTTP headers using Helmet
-
-Express rate limiting
-
-Server-side input validation
-
-Global error handling middleware
+- Password hashing using bcrypt
+- JWT token-based authentication
+- Role-based authorization
+- AES encryption for sensitive academic fields
+- Secure HTTP headers using Helmet
+- Express rate limiting
+- Server-side input validation
+- Global error handling middleware
 
 ### 📊 System Architecture
 Frontend (React)
@@ -159,17 +150,12 @@ MySQL Database (Encrypted Fields)
 
 ### 🚀 Future Improvements
 
-Deploy application to cloud (Render / Railway)
-
-Add email verification system
-
-Add password reset functionality
-
-Advanced analytics dashboard
-
-Real-time activity monitoring
-
-Department-level access restrictions
+- Deploy application to cloud (Render / Railway)
+- Add email verification system
+- Add password reset functionality
+- Advanced analytics dashboard
+- Real-time activity monitoring
+- Department-level access restrictions
 
 ### 📌 Project Status
 
