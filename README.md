@@ -76,7 +76,7 @@ This system ensures that sensitive academic data is securely stored using AES en
 git clone https://github.com/akjs-jothi-suhitha/Academic-Data-Encryption-Audit-System.git
 cd Academic-Data-Encryption-Audit-System
 
-2️⃣ Backend Setup
+###2️⃣ Backend Setup
 cd server
 npm install
 
@@ -98,7 +98,7 @@ Backend runs on:
 
 http://localhost:5000
 
-3️⃣ Frontend Setup
+###3️⃣ Frontend Setup
 cd ../client
 npm install
 npm run dev
@@ -107,53 +107,39 @@ Frontend runs on:
 
 http://localhost:5173
 
-🔌 API Endpoints
+###🔌 API Endpoints
+
 Authentication
 
 POST /api/auth/register
-
 POST /api/auth/login
 
 Academic Records
 
 GET /api/records
-
 POST /api/records
-
 PUT /api/records/:id
-
 DELETE /api/records/:id
 
 Audit Logs (Admin Only)
-
 GET /api/audit
-
 GET /api/audit/export
 
 Admin Dashboard
-
 GET /api/admin/dashboard
 
-🔒 Security Features Implemented
+###🔒 Security Features Implemented
 
 Password hashing using bcrypt
-
 JWT token-based authentication
-
 Role-based authorization
-
 AES encryption for sensitive academic fields
-
 Secure HTTP headers using Helmet
-
 Express rate limiting
-
 Server-side input validation
-
 Global error handling middleware
 
-📊 System Architecture
-
+###📊 System Architecture
 Frontend (React)
 ⬇
 Axios API Calls
@@ -164,21 +150,15 @@ Sequelize ORM
 ⬇
 MySQL Database (Encrypted Fields)
 
-🚀 Future Improvements
-
+###🚀 Future Improvements
 Deploy application to cloud (Render / Railway)
-
 Add email verification system
-
 Add password reset functionality
-
 Advanced analytics dashboard
-
 Real-time activity monitoring
-
 Department-level access restrictions
 
-📌 Project Status
+###📌 Project Status
 
 ✅ Phase 2 Completed
 🔐 Fully Functional Full-Stack Application
