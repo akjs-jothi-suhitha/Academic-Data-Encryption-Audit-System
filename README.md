@@ -159,8 +159,8 @@ MySQL Database (Encrypted Fields)
 
 ### 📌 Project Status
 
-✅ Phase 2 Completed
-🔐 Fully Functional Full-Stack Application
-🛡️ Security Implemented
-📊 Dashboard Integrated
-📜 Audit Logging Enabled
+- ✅ Phase 2 Completed
+- 🔐 Fully Functional Full-Stack Application
+- 🛡️ Security Implemented
+- 📊 Dashboard Integrated
+- 📜 Audit Logging Enabled
