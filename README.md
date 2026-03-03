@@ -65,3 +65,123 @@ This system ensures that sensitive academic data is securely stored using AES en
 ---
 
 ## 📂 Project Structure
+
+---
+
+## ⚙️ Installation & Setup
+
+### 1️⃣ Clone the Repository
+
+
+git clone https://github.com/akjs-jothi-suhitha/Academic-Data-Encryption-Audit-System.git
+cd Academic-Data-Encryption-Audit-System
+
+2️⃣ Backend Setup
+cd server
+npm install
+
+Create a .env file inside the server folder:
+
+PORT=5000
+DB_NAME=academic_db
+DB_USER=root
+DB_PASSWORD=your_password
+DB_HOST=localhost
+JWT_SECRET=your_jwt_secret
+AES_SECRET=your_aes_secret
+
+Start the backend server:
+
+npm run dev
+
+Backend runs on:
+
+http://localhost:5000
+
+3️⃣ Frontend Setup
+cd ../client
+npm install
+npm run dev
+
+Frontend runs on:
+
+http://localhost:5173
+
+🔌 API Endpoints
+Authentication
+
+POST /api/auth/register
+
+POST /api/auth/login
+
+Academic Records
+
+GET /api/records
+
+POST /api/records
+
+PUT /api/records/:id
+
+DELETE /api/records/:id
+
+Audit Logs (Admin Only)
+
+GET /api/audit
+
+GET /api/audit/export
+
+Admin Dashboard
+
+GET /api/admin/dashboard
+
+🔒 Security Features Implemented
+
+Password hashing using bcrypt
+
+JWT token-based authentication
+
+Role-based authorization
+
+AES encryption for sensitive academic fields
+
+Secure HTTP headers using Helmet
+
+Express rate limiting
+
+Server-side input validation
+
+Global error handling middleware
+
+📊 System Architecture
+
+Frontend (React)
+⬇
+Axios API Calls
+⬇
+Backend (Express.js)
+⬇
+Sequelize ORM
+⬇
+MySQL Database (Encrypted Fields)
+
+🚀 Future Improvements
+
+Deploy application to cloud (Render / Railway)
+
+Add email verification system
+
+Add password reset functionality
+
+Advanced analytics dashboard
+
+Real-time activity monitoring
+
+Department-level access restrictions
+
+📌 Project Status
+
+✅ Phase 2 Completed
+🔐 Fully Functional Full-Stack Application
+🛡️ Security Implemented
+📊 Dashboard Integrated
+📜 Audit Logging Enabled
