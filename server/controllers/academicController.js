@@ -1,4 +1,4 @@
-const { AcademicRecord } = require("../models");
+const { AcademicRecord, AuditLog } = require("../models");
 const { encrypt, decrypt } = require("../utils/encryption");
 
 /*
@@ -17,7 +17,6 @@ exports.createRecord = async (req, res) => {
       remarks,
     } = req.body;
 
-    // ✅ Input validation
     if (!student_name || !roll_number || !department || !semester || !gpa) {
       return res.status(400).json({
         success: false,
@@ -32,6 +31,14 @@ exports.createRecord = async (req, res) => {
       semester,
       gpa,
       remarks: remarks || "",
+    });
+
+    /* ===== AUDIT LOG ===== */
+    await AuditLog.create({
+      action: "CREATE",
+      user_id: req.user.id,
+      record_id: newRecord.id,
+      ip_address: req.ip,
     });
 
     res.status(201).json({
@@ -70,6 +77,17 @@ exports.getRecords = async (req, res) => {
       gpa: r.gpa,
       remarks: r.remarks,
     }));
+
+    /* ===== AUDIT LOG for VIEW ===== */
+    try {
+      await AuditLog.create({
+        action: "VIEW",
+        user_id: req.user.id,
+        ip_address: req.ip,
+      });
+    } catch (auditError) {
+      console.error("VIEW AUDIT ERROR:", auditError);
+    }
 
     res.json({
       success: true,
@@ -129,6 +147,14 @@ exports.updateRecord = async (req, res) => {
       remarks: remarks || "",
     });
 
+    /* ===== AUDIT LOG ===== */
+    await AuditLog.create({
+      action: "UPDATE",
+      user_id: req.user.id,
+      record_id: record.id,
+      ip_address: req.ip,
+    });
+
     res.json({
       success: true,
       message: "Record updated successfully",
@@ -143,6 +169,7 @@ exports.updateRecord = async (req, res) => {
     });
   }
 };
+
 
 /*
 ====================================================
@@ -162,6 +189,18 @@ exports.deleteRecord = async (req, res) => {
       });
     }
 
+    // create audit log BEFORE deleting
+    try {
+      await AuditLog.create({
+        action: "DELETE",
+        user_id: req.user.id,
+        record_id: record.id,
+        ip_address: req.ip,
+      });
+    } catch (auditError) {
+      console.error("AUDIT LOG ERROR:", auditError);
+    }
+
     await record.destroy();
 
     res.json({
@@ -171,7 +210,7 @@ exports.deleteRecord = async (req, res) => {
 
   } catch (error) {
     console.error("DELETE ERROR:", error);
-
+    
     res.status(500).json({
       success: false,
       message: "Server error while deleting record",

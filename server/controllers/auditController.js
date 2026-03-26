@@ -11,12 +11,33 @@ exports.getAuditLogs = async (req, res) => {
     const limit = parseInt(req.query.limit) || 10;
     const offset = (page - 1) * limit;
 
-    const { action } = req.query;
+    const { action, startDate, endDate, user_id } = req.query;
 
     let whereCondition = {};
 
     if (action) {
       whereCondition.action = action;
+    }
+    
+    if (user_id) {
+      whereCondition.user_id = user_id;
+    }
+    
+    // If faculty, they can only see their own logs
+    if (req.user.role === "faculty") {
+      whereCondition.user_id = req.user.id;
+    }
+    
+    // Using Sequelize operators for date range
+    const { Op } = require("sequelize");
+    if (startDate && endDate) {
+      whereCondition.createdAt = {
+        [Op.between]: [new Date(startDate), new Date(endDate)],
+      };
+    } else if (startDate) {
+      whereCondition.createdAt = { [Op.gte]: new Date(startDate) };
+    } else if (endDate) {
+      whereCondition.createdAt = { [Op.lte]: new Date(endDate) };
     }
 
     const { count, rows } = await AuditLog.findAndCountAll({

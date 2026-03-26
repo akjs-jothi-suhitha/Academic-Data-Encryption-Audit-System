@@ -11,10 +11,10 @@ AUDIT ROUTES (Admin Protected)
 */
 
 // Get paginated logs with filter
+// Get paginated logs with filter
 router.get(
   "/",
   verifyToken,
-  authorizeRoles("admin"),
   auditController.getAuditLogs
 );
 

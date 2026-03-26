@@ -22,6 +22,10 @@ const User = sequelize.define(
       type: DataTypes.STRING,
       allowNull: false,
     },
+    department: {
+      type: DataTypes.STRING,
+      allowNull: true,
+    },
     role: {
       type: DataTypes.ENUM("admin", "faculty"),
       defaultValue: "faculty",
@@ -30,6 +34,8 @@ const User = sequelize.define(
   {
     timestamps: true,
     tableName: "users",
+    createdAt: "created_at",
+    updatedAt: "updated_at",
   }
 );
 

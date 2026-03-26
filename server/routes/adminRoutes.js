@@ -26,4 +26,10 @@ router.get(
   adminController.getAnalytics
 );
 
+// 👥 Faculty Management Routes
+router.get("/faculty", verifyToken, authorizeRoles("admin"), adminController.getFacultyList);
+router.post("/faculty", verifyToken, authorizeRoles("admin"), adminController.addFaculty);
+router.put("/faculty/:id", verifyToken, authorizeRoles("admin"), adminController.updateFaculty);
+router.delete("/faculty/:id", verifyToken, authorizeRoles("admin"), adminController.deleteFaculty);
+
 module.exports = router;

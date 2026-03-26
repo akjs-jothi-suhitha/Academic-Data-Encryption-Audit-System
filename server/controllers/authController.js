@@ -50,13 +50,17 @@ LOGIN USER
 */
 exports.login = async (req, res) => {
   try {
-    const { email, password } = req.body;
+    const { email, password, role } = req.body;
 
     // Check if user exists
     const user = await User.findOne({ where: { email } });
 
     if (!user) {
       return res.status(401).json({ message: "Invalid credentials" });
+    }
+
+    if (role && user.role !== role) {
+      return res.status(403).json({ message: "Access denied. Role mismatch." });
     }
 
     // Compare hashed password
@@ -73,6 +77,13 @@ exports.login = async (req, res) => {
       { expiresIn: "1d" }
     );
 
+    const { AuditLog } = require("../models");
+    await AuditLog.create({
+      action: "LOGIN",
+      user_id: user.id,
+      ip_address: req.ip || req.connection.remoteAddress,
+    });
+
     // IMPORTANT: Return user object for frontend role detection
     res.json({
       token,
@@ -85,5 +96,24 @@ exports.login = async (req, res) => {
 
   } catch (error) {
     res.status(500).json({ message: "Login failed", error });
+  }
+};
+
+/*
+=========================================
+GET PROFILE
+=========================================
+*/
+exports.getProfile = async (req, res) => {
+  try {
+    const user = await User.findByPk(req.user.id, {
+      attributes: { exclude: ["password"] }
+    });
+    if (!user) {
+      return res.status(404).json({ message: "User not found" });
+    }
+    res.json({ success: true, user });
+  } catch (error) {
+    res.status(500).json({ message: "Error fetching profile", error });
   }
 };

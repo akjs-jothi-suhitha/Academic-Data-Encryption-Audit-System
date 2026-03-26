@@ -10,9 +10,12 @@ import {
   Cell,
   XAxis,
   YAxis,
+  CartesianGrid,
   Tooltip,
   ResponsiveContainer,
   Legend,
+  LineChart,
+  Line
 } from "recharts";
 
 function AdminDashboard() {
@@ -131,8 +134,22 @@ function AdminDashboard() {
               <XAxis dataKey="role" />
               <YAxis />
               <Tooltip />
-              <Bar dataKey="count" fill="#16a34a" />
+              <Bar dataKey="count" fill="#16a34a" radius={[4, 4, 0, 0]} barSize={40} />
             </BarChart>
+          </ResponsiveContainer>
+        </div>
+
+        {/* Activity Over Time */}
+        <div className="bg-white p-6 rounded-xl shadow-md md:col-span-2">
+          <h2 className="font-semibold mb-4">Activity Over Time</h2>
+          <ResponsiveContainer width="100%" height={300}>
+            <LineChart data={analytics.activityOverTime}>
+              <CartesianGrid strokeDasharray="3 3" vertical={false} />
+              <XAxis dataKey="date" />
+              <YAxis />
+              <Tooltip />
+              <Line type="monotone" dataKey="count" stroke="#f59e0b" strokeWidth={3} />
+            </LineChart>
           </ResponsiveContainer>
         </div>
 

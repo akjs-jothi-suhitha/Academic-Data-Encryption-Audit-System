@@ -1,9 +1,10 @@
 import { Routes, Route, Navigate } from "react-router-dom";
-
 import Login from "./pages/Login";
-import Register from "./pages/Register";
 import AdminDashboard from "./pages/AdminDashboard";
+import FacultyManagement from "./pages/FacultyManagement";
 import FacultyDashboard from "./pages/FacultyDashboard";
+import FacultyOverview from "./pages/FacultyOverview";
+import FacultyProfile from "./pages/FacultyProfile";
 import AuditLogs from "./pages/AuditLogs";
 
 import ProtectedRoute from "./components/ProtectedRoute";
@@ -13,9 +14,7 @@ function App() {
     <Routes>
       {/* ========================================= */}
       {/* Public Routes */}
-      {/* ========================================= */}
       <Route path="/" element={<Login />} />
-      <Route path="/register" element={<Register />} />
 
       {/* ========================================= */}
       {/* Admin Routes */}
@@ -25,6 +24,15 @@ function App() {
         element={
           <ProtectedRoute role="admin">
             <AdminDashboard />
+          </ProtectedRoute>
+        }
+      />
+
+      <Route
+        path="/admin/faculty"
+        element={
+          <ProtectedRoute role="admin">
+            <FacultyManagement />
           </ProtectedRoute>
         }
       />
@@ -45,10 +53,27 @@ function App() {
         path="/faculty"
         element={
           <ProtectedRoute role="faculty">
+            <FacultyOverview />
+          </ProtectedRoute>
+        }
+      />
+      <Route
+        path="/faculty/profile"
+        element={
+          <ProtectedRoute role="faculty">
+            <FacultyProfile />
+          </ProtectedRoute>
+        }
+      />
+      <Route
+        path="/faculty/data"
+        element={
+          <ProtectedRoute role="faculty">
             <FacultyDashboard />
           </ProtectedRoute>
         }
       />
+      {/* ========================================= */}
 
       {/* ========================================= */}
       {/* Fallback Route */}

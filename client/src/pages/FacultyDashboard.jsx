@@ -2,6 +2,7 @@ import { useEffect, useState } from "react";
 import API from "../services/api";
 import Layout from "../components/Layout";
 import { toast } from "react-toastify";
+import { BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer } from "recharts";
 
 function FacultyDashboard() {
   const [records, setRecords] = useState([]);
@@ -21,7 +22,7 @@ function FacultyDashboard() {
 
   useEffect(() => {
     fetchRecords();
-  }, [search]);
+  }, []);
 
   const fetchRecords = async () => {
     try {
@@ -113,12 +114,81 @@ function FacultyDashboard() {
     }
   };
 
+  // Derived Statistics
+  const totalStudents = records.length;
+  const avgGpa = totalStudents > 0 
+    ? (records.reduce((acc, curr) => acc + Number(curr.gpa), 0) / totalStudents).toFixed(2)
+    : 0;
+  
+  // Data for chart (Top 5 or maybe all if few)
+  const chartData = records.slice(0, 10).map((r) => ({
+    name: r.student_name,
+    gpa: Number(r.gpa),
+  }));
+
   return (
     <Layout>
+      <div className="mb-8">
+        <h1 className="text-3xl font-bold text-gray-800">Faculty Dashboard</h1>
+        <p className="text-gray-500 mt-1">Manage academic records and view student performance</p>
+      </div>
+
+      {/* Summary Cards */}
+      <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
+        <div className="bg-white p-6 rounded-2xl shadow-sm border border-gray-100 flex items-center gap-4">
+          <div className="w-12 h-12 bg-blue-100 text-blue-600 rounded-xl flex items-center justify-center text-2xl">
+            🎓
+          </div>
+          <div>
+            <p className="text-sm font-medium text-gray-500">Total Students</p>
+            <p className="text-2xl font-bold text-gray-800">{loading ? "..." : totalStudents}</p>
+          </div>
+        </div>
+        <div className="bg-white p-6 rounded-2xl shadow-sm border border-gray-100 flex items-center gap-4">
+          <div className="w-12 h-12 bg-green-100 text-green-600 rounded-xl flex items-center justify-center text-2xl">
+            📈
+          </div>
+          <div>
+            <p className="text-sm font-medium text-gray-500">Average GPA</p>
+            <p className="text-2xl font-bold text-gray-800">{loading ? "..." : avgGpa}</p>
+          </div>
+        </div>
+        <div className="bg-white p-6 rounded-2xl shadow-sm border border-gray-100 flex items-center gap-4">
+          <div className="w-12 h-12 bg-purple-100 text-purple-600 rounded-xl flex items-center justify-center text-2xl">
+            📝
+          </div>
+          <div>
+            <p className="text-sm font-medium text-gray-500">Records Uploaded</p>
+            <p className="text-2xl font-bold text-gray-800">{loading ? "..." : totalStudents}</p>
+          </div>
+        </div>
+      </div>
+
+      <div className="flex flex-col lg:flex-row gap-8 mb-8">
+        <div className="bg-white p-6 rounded-2xl shadow-sm border border-gray-100 flex-1">
+          <h2 className="text-lg font-bold text-gray-800 mb-4">Student Performance (GPA)</h2>
+          {records.length > 0 ? (
+            <div className="h-64 mt-4 w-full">
+               <ResponsiveContainer width="100%" height="100%">
+                 <BarChart data={chartData}>
+                   <CartesianGrid strokeDasharray="3 3" vertical={false} stroke="#E5E7EB" />
+                   <XAxis dataKey="name" tick={{fill: '#6B7280', fontSize: 12}} axisLine={false} tickLine={false} />
+                   <YAxis tick={{fill: '#6B7280', fontSize: 12}} axisLine={false} tickLine={false} />
+                   <Tooltip cursor={{fill: '#F3F4F6'}} contentStyle={{borderRadius: '8px', border: 'none', boxShadow: '0 4px 6px -1px rgba(0, 0, 0, 0.1)'}} />
+                   <Bar dataKey="gpa" fill="#4F46E5" radius={[4, 4, 0, 0]} barSize={32} />
+                 </BarChart>
+               </ResponsiveContainer>
+            </div>
+          ) : (
+            <div className="h-64 flex items-center justify-center text-gray-400">No data available</div>
+          )}
+        </div>
+      </div>
+
       <div className="flex justify-between items-center mb-6">
-        <h1 className="text-3xl font-bold text-gray-800">
-          Faculty Academic Records
-        </h1>
+        <h2 className="text-xl font-bold text-gray-800">
+          Academic Records
+        </h2>
 
         <button
           onClick={() => {
@@ -184,7 +254,11 @@ function FacultyDashboard() {
               </tr>
             </thead>
             <tbody>
-              {records.map((r) => (
+              {records.filter(r => 
+                (r.student_name && r.student_name.toLowerCase().includes(search.toLowerCase())) ||
+                (r.roll_number && r.roll_number.toLowerCase().includes(search.toLowerCase())) ||
+                (r.department && r.department.toLowerCase().includes(search.toLowerCase()))
+              ).map((r) => (
                 <tr key={r.id} className="border-b hover:bg-gray-50">
                   <td className="py-2">{r.student_name}</td>
                   <td className="py-2">{r.roll_number}</td>

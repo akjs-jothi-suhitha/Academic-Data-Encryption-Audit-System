@@ -11,7 +11,7 @@ const AuditLog = sequelize.define(
     },
 
     action: {
-      type: DataTypes.ENUM("CREATE", "VIEW", "UPDATE", "DELETE"),
+      type: DataTypes.ENUM("CREATE", "VIEW", "UPDATE", "DELETE", "LOGIN"),
       allowNull: false,
     },
 

@@ -93,8 +93,23 @@ const startServer = async () => {
   try {
     await connectDB();
 
-    await sequelize.sync();
+    await sequelize.sync({ alter: true });
     console.log("✅ Database connected & tables synced");
+
+    // Auto-seed admin user if none exists
+    const { User } = require("./models");
+    const bcrypt = require("bcryptjs");
+    const adminExists = await User.findOne({ where: { role: "admin" } });
+    if (!adminExists) {
+      const hashedPassword = await bcrypt.hash("admin123", 10);
+      await User.create({
+        name: "System Admin",
+        email: "admin@test.com",
+        password: hashedPassword,
+        role: "admin",
+      });
+      console.log("✅ Default Admin created: admin@test.com / admin123");
+    }
 
     app.listen(PORT, () => {
       console.log(`🚀 Server running on http://localhost:${PORT}`);
